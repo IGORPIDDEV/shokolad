@@ -1,5 +1,7 @@
 import type { Metadata } from "next"
-import { Inter, Cormorant_Garamond } from "next/font/google"
+import { Cormorant_Garamond, Inter } from "next/font/google"
+
+import { ThemeProvider } from "@/components/shared/ThemeProvider"
 
 import "./globals.css"
 
@@ -25,11 +27,9 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="uk">
-      <body
-        className={`${inter.variable} ${cormorant.variable} bg-[#FFF8F2] text-[#3A241C] antialiased`}
-      >
-        {children}
+    <html lang="uk" suppressHydrationWarning>
+      <body className={`${inter.variable} ${cormorant.variable} antialiased`}>
+        <ThemeProvider>{children}</ThemeProvider>
       </body>
     </html>
   )
