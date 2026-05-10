@@ -5,15 +5,17 @@ import { ThemeProvider } from "@/components/shared/ThemeProvider"
 
 import "./globals.css"
 
-const inter = Inter({
+import { Manrope, Marcellus } from "next/font/google"
+
+const manrope = Manrope({
   subsets: ["latin", "cyrillic"],
-  variable: "--font-inter",
+  variable: "--font-manrope",
 })
 
-const cormorant = Cormorant_Garamond({
-  subsets: ["latin", "cyrillic"],
-  variable: "--font-cormorant",
-  weight: ["400", "500", "600", "700"],
+const marcellus = Marcellus({
+  subsets: ["latin"],
+  variable: "--font-heading",
+  weight: "400",
 })
 
 export const metadata: Metadata = {
@@ -28,7 +30,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="uk" suppressHydrationWarning>
-      <body className={`${inter.variable} ${cormorant.variable} antialiased`}>
+      <body className={`${manrope.variable} ${marcellus.variable} antialiased`}>
         <ThemeProvider>{children}</ThemeProvider>
       </body>
     </html>
