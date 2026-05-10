@@ -1,21 +1,14 @@
 import type { Metadata } from "next"
-import { Cormorant_Garamond, Inter } from "next/font/google"
+import { Onest } from "next/font/google"
 
 import { ThemeProvider } from "@/components/shared/ThemeProvider"
 
 import "./globals.css"
 
-import { Manrope, Marcellus } from "next/font/google"
-
-const manrope = Manrope({
+const onest = Onest({
   subsets: ["latin", "cyrillic"],
-  variable: "--font-manrope",
-})
-
-const marcellus = Marcellus({
-  subsets: ["latin"],
-  variable: "--font-heading",
-  weight: "400",
+  variable: "--font-onest",
+  weight: ["400", "500", "600", "700", "800", "900"],
 })
 
 export const metadata: Metadata = {
@@ -25,12 +18,10 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
-}: Readonly<{
-  children: React.ReactNode
-}>) {
+}: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="uk" suppressHydrationWarning>
-      <body className={`${manrope.variable} ${marcellus.variable} antialiased`}>
+      <body className={`${onest.variable} font-sans antialiased`}>
         <ThemeProvider>{children}</ThemeProvider>
       </body>
     </html>

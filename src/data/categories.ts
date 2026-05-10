@@ -3,7 +3,10 @@ export type Category = {
   title: string
   description: string
   href: string
-  imageLabel: string
+  image: string
+  badge: string
+  items: string
+  price: string
 }
 
 export const categories: Category[] = [
@@ -12,20 +15,29 @@ export const categories: Category[] = [
     title: "Кава",
     description: "Еспресо, капучино, лате та сезонні напої",
     href: "/menu?category=coffee",
-    imageLabel: "Кава",
+    image: "/images/categories/coffee.png",
+    badge: "Fresh daily",
+    items: "15+ позицій",
+    price: "від 85₴",
   },
   {
     id: "desserts",
     title: "Десерти",
-    description: "Ніжні тістечка, еклери та солодощі",
+    description: "Ніжні тістечка, еклери, макарони та солодощі",
     href: "/menu?category=desserts",
-    imageLabel: "Десерти",
+    image: "/images/categories/desserts.png",
+    badge: "Популярне",
+    items: "20+ десертів",
+    price: "від 120₴",
   },
   {
     id: "cakes",
     title: "Торти",
     description: "Торти на замовлення та святкові набори",
     href: "/cakes",
-    imageLabel: "Торти",
+    image: "/images/categories/cakes.png",
+    badge: "Авторські",
+    items: "Custom cakes",
+    price: "від 950₴",
   },
 ]

@@ -24,7 +24,7 @@ export function ThemeToggle() {
         type="button"
         variant="ghost"
         size="icon"
-        className="rounded-full"
+        className="h-10 w-10 rounded-full bg-card/80 backdrop-blur"
         aria-label="Перемкнути тему"
         disabled
       >
@@ -40,7 +40,7 @@ export function ThemeToggle() {
       type="button"
       variant="ghost"
       size="icon"
-      className="rounded-full"
+      className="h-10 w-10 rounded-full bg-card/80 backdrop-blur"
       onClick={() => setTheme(isDark ? "light" : "dark")}
       aria-label="Перемкнути тему"
     >
