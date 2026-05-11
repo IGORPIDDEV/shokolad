@@ -1,7 +1,9 @@
 "use client"
 
 import * as React from "react"
+import { zodResolver } from "@hookform/resolvers/zod"
 import { CheckCircle2, MapPin, Phone, ShoppingBag, User, X } from "lucide-react"
+import { useForm } from "react-hook-form"
 
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -17,62 +19,76 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet"
+
 import { useCartStore } from "@/store/cart-store"
+import {
+  checkoutSchema,
+  type CheckoutFormValues,
+} from "@/features/checkout/schemas/checkout-schema"
 
 type CheckoutSheetProps = {
   children: React.ReactNode
 }
 
 export function CheckoutSheet({ children }: CheckoutSheetProps) {
-  const [deliveryType, setDeliveryType] = React.useState("pickup")
   const [isSuccess, setIsSuccess] = React.useState(false)
   const [isLoading, setIsLoading] = React.useState(false)
   const [error, setError] = React.useState("")
+  const [successTotal, setSuccessTotal] = React.useState(0)
 
   const items = useCartStore((state) => state.items)
   const total = useCartStore((state) => state.getTotal())
   const clear = useCartStore((state) => state.clear)
 
-  async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
-    event.preventDefault()
+  const {
+    register,
+    handleSubmit,
+    watch,
+    setValue,
+    formState: { errors },
+  } = useForm<CheckoutFormValues>({
+    resolver: zodResolver(checkoutSchema),
+    defaultValues: {
+      name: "",
+      phone: "",
+      deliveryType: "pickup",
+      address: "",
+      comment: "",
+    },
+  })
 
+  const deliveryType = watch("deliveryType")
+
+  async function onSubmit(values: CheckoutFormValues) {
     setError("")
     setIsLoading(true)
 
-    const formData = new FormData(event.currentTarget)
-
     const payload = {
-        name: String(formData.get("name") || ""),
-        phone: String(formData.get("phone") || ""),
-        deliveryType,
-        address: String(formData.get("address") || ""),
-        comment: String(formData.get("comment") || ""),
-        items: items.map((item) => ({
-        title: item.product.title,
-        price: item.product.price,
+      ...values,
+      items: items.map((item) => ({
+        productId: item.product.id,
         quantity: item.quantity,
-        })),
-        total,
+      })),
     }
 
     const response = await fetch("/api/orders", {
-        method: "POST",
-        headers: {
+      method: "POST",
+      headers: {
         "Content-Type": "application/json",
-        },
-        body: JSON.stringify(payload),
+      },
+      body: JSON.stringify(payload),
     })
 
     setIsLoading(false)
 
     if (!response.ok) {
-        setError("Не вдалося відправити замовлення. Спробуйте ще раз.")
-        return
+      setError("Не вдалося відправити замовлення. Спробуйте ще раз.")
+      return
     }
 
+    setSuccessTotal(total)
     setIsSuccess(true)
-    clear()
-    }
+  }
 
   return (
     <Sheet>
@@ -93,24 +109,55 @@ export function CheckoutSheet({ children }: CheckoutSheetProps) {
         </SheetClose>
 
         {isSuccess ? (
-          <div className="flex h-full flex-col items-center justify-center px-6 text-center">
-            <div className="flex h-20 w-20 items-center justify-center rounded-full bg-muted">
-              <CheckCircle2 className="h-10 w-10 text-foreground" />
-            </div>
+          <div className="relative flex h-full flex-col items-center justify-center overflow-hidden px-6 text-center">
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(197,138,92,0.18),transparent_45%)]" />
 
-            <h2 className="mt-6 text-4xl font-extrabold tracking-[-0.055em] text-foreground">
-              Замовлення прийнято
-            </h2>
+            <div className="relative z-10 w-full max-w-md">
+              <div className="mx-auto flex h-24 w-24 items-center justify-center rounded-full border border-border bg-card shadow-[0_20px_60px_rgba(58,36,28,0.12)]">
+                <div className="flex h-16 w-16 items-center justify-center rounded-full bg-primary text-primary-foreground">
+                  <CheckCircle2 className="h-9 w-9" />
+                </div>
+              </div>
 
-            <p className="mt-3 max-w-sm text-base font-medium leading-7 text-muted-foreground">
-              Дякуємо! Ми скоро звʼяжемось з вами для підтвердження.
-            </p>
+              <p className="mt-8 text-[11px] font-extrabold uppercase tracking-[0.24em] text-muted-foreground">
+                Замовлення оформлено
+              </p>
 
-            <SheetClose asChild>
-              <Button className="mt-8 w-full max-w-sm">
-                Повернутись на сайт
-              </Button>
+              <h2 className="mt-3 text-4xl font-black leading-[0.95] tracking-[-0.065em] text-foreground sm:text-5xl">
+                Дякуємо за
+                <br />
+                ваше замовлення
+              </h2>
+
+              <p className="mx-auto mt-5 max-w-md text-base font-medium leading-7 text-muted-foreground">
+                Ми вже отримали ваше замовлення та скоро звʼяжемось для
+                підтвердження.
+              </p>
+
+              <div className="mt-8 rounded-[1.75rem] border border-border bg-card/80 p-4 shadow-sm backdrop-blur">
+                <div className="flex items-center justify-between gap-4">
+                  <span className="text-sm font-bold text-muted-foreground">
+                    Сума замовлення
+                  </span>
+
+                  <span className="text-2xl font-black tracking-[-0.045em] text-foreground">
+                    {successTotal}₴
+                  </span>
+                </div>
+              </div>
+
+              <SheetClose asChild>
+                <Button
+                    className="mt-8 w-full"
+                    onClick={() => {
+                    clear()
+                    setIsSuccess(false)
+                    }}
+                >
+                    Повернутись на сайт
+                </Button>
             </SheetClose>
+            </div>
           </div>
         ) : (
           <>
@@ -127,7 +174,7 @@ export function CheckoutSheet({ children }: CheckoutSheetProps) {
             </div>
 
             <form
-              onSubmit={handleSubmit}
+              onSubmit={handleSubmit(onSubmit)}
               className="flex min-h-0 flex-1 flex-col"
             >
               <div className="min-h-0 flex-1 overflow-y-auto px-4 py-4">
@@ -136,19 +183,24 @@ export function CheckoutSheet({ children }: CheckoutSheetProps) {
                     Ваші дані
                   </p>
 
-                  <div className="grid gap-3">
+                  <div className="grid gap-4">
                     <div className="space-y-2">
                       <Label htmlFor="name">Імʼя</Label>
                       <div className="relative">
                         <User className="absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
                         <Input
                           id="name"
-                          name="name"
-                          required
                           placeholder="Марія"
                           className="h-12 rounded-full pl-11"
+                          {...register("name")}
                         />
                       </div>
+
+                      {errors.name && (
+                        <p className="text-sm font-bold text-destructive">
+                          {errors.name.message}
+                        </p>
+                      )}
                     </div>
 
                     <div className="space-y-2">
@@ -157,13 +209,18 @@ export function CheckoutSheet({ children }: CheckoutSheetProps) {
                         <Phone className="absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
                         <Input
                           id="phone"
-                          name="phone"
-                          required
                           type="tel"
                           placeholder="+380..."
                           className="h-12 rounded-full pl-11"
+                          {...register("phone")}
                         />
                       </div>
+
+                      {errors.phone && (
+                        <p className="text-sm font-bold text-destructive">
+                          {errors.phone.message}
+                        </p>
+                      )}
                     </div>
                   </div>
                 </div>
@@ -175,10 +232,16 @@ export function CheckoutSheet({ children }: CheckoutSheetProps) {
 
                   <RadioGroup
                     value={deliveryType}
-                    onValueChange={setDeliveryType}
+                    onValueChange={(value) =>
+                      setValue(
+                        "deliveryType",
+                        value as CheckoutFormValues["deliveryType"],
+                        { shouldValidate: true }
+                      )
+                    }
                     className="grid gap-3"
                   >
-                    <Label className="flex cursor-pointer items-center gap-3 rounded-lg border border-border bg-background p-4">
+                    <Label className="flex cursor-pointer items-center gap-3 rounded-2xl border border-border bg-background p-4">
                       <RadioGroupItem value="pickup" />
                       <div>
                         <p className="font-bold text-foreground">Самовивіз</p>
@@ -188,7 +251,7 @@ export function CheckoutSheet({ children }: CheckoutSheetProps) {
                       </div>
                     </Label>
 
-                    <Label className="flex cursor-pointer items-center gap-3 rounded-lg border border-border bg-background p-4">
+                    <Label className="flex cursor-pointer items-center gap-3 rounded-2xl border border-border bg-background p-4">
                       <RadioGroupItem value="delivery" />
                       <div>
                         <p className="font-bold text-foreground">Доставка</p>
@@ -206,12 +269,17 @@ export function CheckoutSheet({ children }: CheckoutSheetProps) {
                         <MapPin className="absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
                         <Input
                           id="address"
-                          name="address"
-                          required
                           placeholder="Вулиця, будинок, квартира"
                           className="h-12 rounded-full pl-11"
+                          {...register("address")}
                         />
                       </div>
+
+                      {errors.address && (
+                        <p className="text-sm font-bold text-destructive">
+                          {errors.address.message}
+                        </p>
+                      )}
                     </div>
                   )}
                 </div>
@@ -221,10 +289,16 @@ export function CheckoutSheet({ children }: CheckoutSheetProps) {
                     <Label htmlFor="comment">Коментар</Label>
                     <Textarea
                       id="comment"
-                      name="comment"
                       placeholder="Побажання до замовлення..."
-                      className="min-h-28 resize-none rounded-lg"
+                      className="min-h-28 resize-none rounded-3xl"
+                      {...register("comment")}
                     />
+
+                    {errors.comment && (
+                      <p className="text-sm font-bold text-destructive">
+                        {errors.comment.message}
+                      </p>
+                    )}
                   </div>
                 </div>
 
@@ -264,14 +338,18 @@ export function CheckoutSheet({ children }: CheckoutSheetProps) {
                 </div>
 
                 {error && (
-                <p className="mb-3 rounded-lg bg-destructive/10 px-4 py-3 text-sm font-bold text-destructive">
+                  <p className="mb-3 rounded-2xl bg-destructive/10 px-4 py-3 text-sm font-bold text-destructive">
                     {error}
-                </p>
+                  </p>
                 )}
 
-                <Button className="w-full" type="submit" disabled={isLoading}>
-                    <ShoppingBag className="mr-2 h-5 w-5" />
-                    {isLoading ? "Відправляємо..." : "Підтвердити замовлення"}
+                <Button
+                  className="w-full"
+                  type="submit"
+                  disabled={isLoading || items.length === 0}
+                >
+                  <ShoppingBag className="mr-2 h-5 w-5" />
+                  {isLoading ? "Відправляємо..." : "Підтвердити замовлення"}
                 </Button>
               </div>
             </form>
