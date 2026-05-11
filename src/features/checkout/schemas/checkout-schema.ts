@@ -5,11 +5,12 @@ export const checkoutSchema = z
   .object({
     name: z.string().trim().min(2, "Вкажіть імʼя").max(80),
     phone: z
-      .string()
-      .trim()
-      .min(7, "Вкажіть телефон")
-      .max(30)
-      .regex(/^[\d\s()+-]+$/, "Некоректний телефон"),
+    .string()
+    .trim()
+    .regex(
+        /^\+38\s\(\d{3}\)\s\d{3}\s\d{2}\s\d{2}$/,
+        "Введіть коректний номер"
+    ),
     deliveryType: z.enum(["pickup", "delivery"]),
     address: z.string().trim().max(200).optional(),
     comment: z.string().trim().max(500).optional(),

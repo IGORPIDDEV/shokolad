@@ -4,6 +4,7 @@ import * as React from "react"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { CheckCircle2, MapPin, Phone, ShoppingBag, User, X } from "lucide-react"
 import { useForm } from "react-hook-form"
+import { PatternFormat } from "react-number-format"
 
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -29,6 +30,15 @@ import {
 type CheckoutSheetProps = {
   children: React.ReactNode
 }
+
+const inputWithIconClassName =
+  "h-14 rounded-2xl border-border/70 bg-[#FCF8F4] pl-12 text-[15px] font-medium shadow-[inset_0_1px_0_rgba(255,255,255,0.7)] placeholder:text-muted-foreground/40 focus-visible:border-[#C58A5C] focus-visible:ring-1 focus-visible:ring-[#C58A5C]/30"
+
+const textareaClassName =
+  "min-h-32 resize-none rounded-[1.75rem] border-border/70 bg-[#FCF8F4] p-4 text-[15px] font-medium shadow-[inset_0_1px_0_rgba(255,255,255,0.7)] placeholder:text-muted-foreground/40 focus-visible:border-[#C58A5C] focus-visible:ring-1 focus-visible:ring-[#C58A5C]/30"
+
+const labelClassName =
+  "text-[13px] font-semibold tracking-[0.01em] text-muted-foreground"
 
 export function CheckoutSheet({ children }: CheckoutSheetProps) {
   const [isSuccess, setIsSuccess] = React.useState(false)
@@ -148,15 +158,15 @@ export function CheckoutSheet({ children }: CheckoutSheetProps) {
 
               <SheetClose asChild>
                 <Button
-                    className="mt-8 w-full"
-                    onClick={() => {
+                  className="mt-8 w-full"
+                  onClick={() => {
                     clear()
                     setIsSuccess(false)
-                    }}
+                  }}
                 >
-                    Повернутись на сайт
+                  Повернутись на сайт
                 </Button>
-            </SheetClose>
+              </SheetClose>
             </div>
           </div>
         ) : (
@@ -185,13 +195,17 @@ export function CheckoutSheet({ children }: CheckoutSheetProps) {
 
                   <div className="grid gap-4">
                     <div className="space-y-2">
-                      <Label htmlFor="name">Імʼя</Label>
+                      <Label htmlFor="name" className={labelClassName}>
+                        Імʼя
+                      </Label>
+
                       <div className="relative">
                         <User className="absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+
                         <Input
                           id="name"
                           placeholder="Марія"
-                          className="h-12 rounded-full pl-11"
+                          className={inputWithIconClassName}
                           {...register("name")}
                         />
                       </div>
@@ -204,15 +218,28 @@ export function CheckoutSheet({ children }: CheckoutSheetProps) {
                     </div>
 
                     <div className="space-y-2">
-                      <Label htmlFor="phone">Телефон</Label>
+                      <Label htmlFor="phone" className={labelClassName}>
+                        Телефон
+                      </Label>
+
                       <div className="relative">
                         <Phone className="absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-                        <Input
-                          id="phone"
+
+                        <PatternFormat
+                          format="+38 (###) ### ## ##"
+                          mask="_"
+                          allowEmptyFormatting={false}
+                          value={watch("phone")}
+                          onValueChange={(values) => {
+                            setValue("phone", values.formattedValue, {
+                              shouldValidate: true,
+                            })
+                          }}
+                          customInput={Input}
                           type="tel"
-                          placeholder="+380..."
-                          className="h-12 rounded-full pl-11"
-                          {...register("phone")}
+                          inputMode="tel"
+                          placeholder="(xxx) xxx xx xx"
+                          className={inputWithIconClassName}
                         />
                       </div>
 
@@ -243,6 +270,7 @@ export function CheckoutSheet({ children }: CheckoutSheetProps) {
                   >
                     <Label className="flex cursor-pointer items-center gap-3 rounded-2xl border border-border bg-background p-4">
                       <RadioGroupItem value="pickup" />
+
                       <div>
                         <p className="font-bold text-foreground">Самовивіз</p>
                         <p className="text-sm text-muted-foreground">
@@ -253,6 +281,7 @@ export function CheckoutSheet({ children }: CheckoutSheetProps) {
 
                     <Label className="flex cursor-pointer items-center gap-3 rounded-2xl border border-border bg-background p-4">
                       <RadioGroupItem value="delivery" />
+
                       <div>
                         <p className="font-bold text-foreground">Доставка</p>
                         <p className="text-sm text-muted-foreground">
@@ -264,13 +293,17 @@ export function CheckoutSheet({ children }: CheckoutSheetProps) {
 
                   {deliveryType === "delivery" && (
                     <div className="mt-4 space-y-2">
-                      <Label htmlFor="address">Адреса доставки</Label>
+                      <Label htmlFor="address" className={labelClassName}>
+                        Адреса доставки
+                      </Label>
+
                       <div className="relative">
                         <MapPin className="absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+
                         <Input
                           id="address"
                           placeholder="Вулиця, будинок, квартира"
-                          className="h-12 rounded-full pl-11"
+                          className={inputWithIconClassName}
                           {...register("address")}
                         />
                       </div>
@@ -286,11 +319,14 @@ export function CheckoutSheet({ children }: CheckoutSheetProps) {
 
                 <div className="mt-4 rounded-[1.75rem] border border-border bg-card p-4">
                   <div className="space-y-2">
-                    <Label htmlFor="comment">Коментар</Label>
+                    <Label htmlFor="comment" className={labelClassName}>
+                      Коментар
+                    </Label>
+
                     <Textarea
                       id="comment"
                       placeholder="Побажання до замовлення..."
-                      className="min-h-28 resize-none rounded-3xl"
+                      className={textareaClassName}
                       {...register("comment")}
                     />
 
