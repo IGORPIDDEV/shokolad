@@ -1,5 +1,6 @@
 export type Product = {
   id: string
+  slug: string
   title: string
   description: string
   image: string
@@ -16,6 +17,7 @@ export type Product = {
 export const products: Product[] = [
   {
     id: "pistachio-cake",
+    slug: "pistachio-cake",
     title: "Фісташка-малина",
     description: "Фісташковий бісквіт, малинове конфі та ніжний крем",
     image: "/images/products/pistachio-cake.png",
@@ -35,6 +37,7 @@ export const products: Product[] = [
 
   {
     id: "cappuccino",
+    slug: "cappuccino",
     title: "Капучино",
     description: "Класичний капучино на зерні преміум якості",
     image: "/images/products/cappuccino.png",
@@ -54,6 +57,7 @@ export const products: Product[] = [
 
   {
     id: "chocolate-dessert",
+    slug: "chocolate-dessert",
     title: "Шоколадний ганаш",
     description: "Насичений шоколадний десерт з вершковою текстурою",
     image: "/images/products/chocolate-dessert.png",
@@ -73,6 +77,7 @@ export const products: Product[] = [
 
   {
     id: "custom-cake",
+    slug: "custom-cake",
     title: "Торт на замовлення",
     description: "Авторський торт для свята, події або подарунку",
     image: "/images/products/custom-cake.png",

@@ -1,0 +1,11 @@
+import { products } from "@/data/products"
+
+export function getProductBySlug(slug: string) {
+  return products.find((product) => product.slug === slug)
+}
+
+export function getRelatedProducts(slug: string, category: string) {
+  return products
+    .filter((product) => product.slug !== slug && product.category === category)
+    .slice(0, 4)
+}
