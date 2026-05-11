@@ -14,6 +14,7 @@ import {
   SheetDescription
 } from "@/components/ui/sheet"
 import { useCartStore } from "@/store/cart-store"
+import { CheckoutSheet } from "@/features/checkout/components/CheckoutSheet"
 
 type CartSheetProps = {
   children: React.ReactNode
@@ -163,9 +164,11 @@ export function CartSheet({ children }: CartSheetProps) {
             </span>
           </div>
 
-          <Button className="w-full" disabled={items.length === 0}>
-            Оформити замовлення
-          </Button>
+          <CheckoutSheet>
+            <Button className="w-full" disabled={items.length === 0}>
+                Оформити замовлення
+            </Button>
+        </CheckoutSheet>
         </div>
       </SheetContent>
     </Sheet>

@@ -20,6 +20,7 @@ import {
   SheetHeader,
   SheetTitle,
   SheetTrigger,
+  SheetDescription
 } from "@/components/ui/sheet"
 
 const navItems = [
@@ -65,6 +66,10 @@ export function MobileMenu() {
                 Шоколад
               </span>
             </SheetTitle>
+
+            <SheetDescription className="sr-only">
+              Мобільне меню навігації сайту
+            </SheetDescription>
 
             <SheetClose asChild>
               <button
