@@ -46,7 +46,7 @@ export function ProductSheet({ product, children }: ProductSheetProps) {
         </SheetClose>
 
         <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain px-4 pt-4 pb-8 sm:px-6 sm:pt-6">
-          <div className="bg-muted relative aspect-[4/3] overflow-hidden rounded-[1.75rem] sm:aspect-[16/10]">
+          <div className="bg-muted relative aspect-4/3 overflow-hidden rounded-[1.75rem] sm:aspect-16/10">
             <Image
               src={product.image}
               alt={product.title}
