@@ -2,34 +2,43 @@
 
 import * as React from "react"
 import { Search } from "lucide-react"
-import { useSearchParams } from "next/navigation"
+import { useRouter, useSearchParams } from "next/navigation"
 
-import { getProducts } from "@/features/products/services/get-products"
+import type { Product } from "@/data/products"
+
 import { Input } from "@/components/ui/input"
 import { Container } from "@/components/shared/Container"
 import { ProductCard } from "@/features/products/components/ProductCard"
 import { CategoryChips } from "@/features/menu/components/CategoryChips"
 
-export function MenuPage() {
+type MenuPageProps = {
+  products: Product[]
+  category: string
+  query: string
+}
+
+export function MenuPage({ products, category, query }: MenuPageProps) {
+  const router = useRouter()
   const searchParams = useSearchParams()
-  const categoryFromUrl = searchParams.get("category") || "all"
+  const [searchValue, setSearchValue] = React.useState(query)
 
-  const [selectedCategory, setSelectedCategory] = React.useState<string | null>(
-    null
-  )
+  function updateQuery(value: string) {
+    setSearchValue(value)
 
-  const [query, setQuery] = React.useState("")
+    const params = new URLSearchParams(searchParams.toString())
 
-  const activeCategory = selectedCategory ?? categoryFromUrl
+    if (value.trim()) {
+      params.set("query", value)
+    } else {
+      params.delete("query")
+    }
 
-  const result = getProducts({
-    category: activeCategory,
-    query,
-    limit: 24,
-    offset: 0,
-  })
+    if (category && category !== "all") {
+      params.set("category", category)
+    }
 
-  const filteredProducts = result.items
+    router.push(`/menu?${params.toString()}`)
+  }
 
   return (
     <main className="pb-28">
@@ -55,8 +64,8 @@ export function MenuPage() {
                 <Search className="text-muted-foreground absolute top-1/2 left-4 h-5 w-5 -translate-y-1/2" />
 
                 <Input
-                  value={query}
-                  onChange={(event) => setQuery(event.target.value)}
+                  value={searchValue}
+                  onChange={(event) => updateQuery(event.target.value)}
                   placeholder="Пошук у меню"
                   className="border-border/70 bg-background placeholder:text-muted-foreground/45 h-14 rounded-2xl pl-12 text-[15px] font-medium focus-visible:border-[#C58A5C] focus-visible:ring-1 focus-visible:ring-[#C58A5C]/30"
                 />
@@ -65,19 +74,16 @@ export function MenuPage() {
           </div>
 
           <div className="mt-6">
-            <CategoryChips
-              activeCategory={activeCategory}
-              onChange={setSelectedCategory}
-            />
+            <CategoryChips activeCategory={category} />
           </div>
 
           <div className="mt-6 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
-            {filteredProducts.map((product) => (
+            {products.map((product) => (
               <ProductCard key={product.id} product={product} />
             ))}
           </div>
 
-          {filteredProducts.length === 0 && (
+          {products.length === 0 && (
             <div className="border-border bg-card mt-6 rounded-[2rem] border p-8 text-center">
               <p className="text-foreground text-2xl font-extrabold tracking-[-0.045em]">
                 Нічого не знайдено
