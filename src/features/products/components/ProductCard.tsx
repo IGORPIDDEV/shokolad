@@ -6,12 +6,15 @@ import { Plus, ShoppingBag } from "lucide-react"
 import type { Product } from "@/data/products"
 import { Button } from "@/components/ui/button"
 import { ProductSheet } from "@/features/products/components/ProductSheet"
+import { useCartStore } from "@/store/cart-store"
 
 type ProductCardProps = {
   product: Product
 }
 
 export function ProductCard({ product }: ProductCardProps) {
+  const addItem = useCartStore((state) => state.addItem)
+
   return (
     <ProductSheet product={product}>
       <article className="group cursor-pointer overflow-hidden rounded-[2rem] border border-border bg-card/80 p-2.5 shadow-[0_14px_50px_rgba(58,36,28,0.07)] backdrop-blur transition hover:-translate-y-1 hover:shadow-[0_18px_70px_rgba(58,36,28,0.12)] dark:shadow-[0_14px_50px_rgba(0,0,0,0.3)]">
@@ -36,7 +39,10 @@ export function ProductCard({ product }: ProductCardProps) {
             type="button"
             className="absolute right-4 top-4 flex h-10 w-10 items-center justify-center rounded-full bg-background/85 text-foreground shadow-sm backdrop-blur transition hover:scale-105"
             aria-label="Швидко додати"
-            onClick={(event) => event.stopPropagation()}
+            onClick={(event) => {
+              event.stopPropagation()
+              addItem(product, 1)
+            }}
           >
             <Plus className="h-5 w-5" />
           </button>
@@ -64,7 +70,13 @@ export function ProductCard({ product }: ProductCardProps) {
               {product.price}₴
             </p>
 
-            <Button size="sm" className="h-11 px-4">
+            <Button
+              size="sm"
+              className="h-11 px-4"
+              onClick={(event) => {
+                event.stopPropagation()
+                addItem(product, 1)
+              }}>
               <ShoppingBag className="mr-2 h-4 w-4" />
               У кошик
             </Button>

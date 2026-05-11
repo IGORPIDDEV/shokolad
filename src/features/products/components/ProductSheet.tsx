@@ -3,6 +3,7 @@
 import * as React from "react"
 import Image from "next/image"
 import { Minus, Plus, ShoppingBag, X } from "lucide-react"
+import { useCartStore } from "@/store/cart-store"
 
 import type { Product } from "@/data/products"
 import { Button } from "@/components/ui/button"
@@ -23,6 +24,7 @@ type ProductSheetProps = {
 export function ProductSheet({ product, children }: ProductSheetProps) {
   const [quantity, setQuantity] = React.useState(1)
   const total = product.price * quantity
+  const addItem = useCartStore((state) => state.addItem)
 
   return (
     <Sheet>
@@ -80,14 +82,11 @@ export function ProductSheet({ product, children }: ProductSheetProps) {
           </div>
 
           <div className="mt-8 grid gap-4">
-  <InfoBlock title="Смак" items={product.taste} />
-
-  <InfoBlock title="Склад" items={product.ingredients} />
-
-  <InfoBlock title="Інформація" items={product.info} />
-
-  <InfoBlock title="Смакує разом з" items={product.pairings} />
-</div>
+            <InfoBlock title="Смак" items={product.taste} />
+            <InfoBlock title="Склад" items={product.ingredients} />
+            <InfoBlock title="Інформація" items={product.info} />
+            <InfoBlock title="Смакує разом з" items={product.pairings} />
+          </div>
 
           <div className="mt-8 rounded-[1.75rem] border border-border bg-card p-4">
             <div className="flex items-center justify-between gap-4">
@@ -131,10 +130,10 @@ export function ProductSheet({ product, children }: ProductSheetProps) {
         </div>
 
         <div className="shrink-0 border-t border-border bg-background/90 p-4 pb-[calc(1rem+env(safe-area-inset-bottom))] backdrop-blur">
-          <Button className="w-full">
+          <Button className="w-full" onClick={() => addItem(product, quantity)}>
             <ShoppingBag className="mr-2 h-5 w-5" />
             Додати в кошик · {total}₴
-          </Button>
+        </Button>
         </div>
       </SheetContent>
     </Sheet>
