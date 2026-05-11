@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server"
 import { z } from "zod"
 
-import { products } from "@/data/products"
+import { supabaseServer } from "@/lib/supabase/server"
 
 const orderSchema = z.object({
   name: z.string().trim().min(2).max(80),
@@ -41,15 +41,28 @@ export async function POST(request: Request) {
       )
     }
 
+    const productIds = order.items.map((item) => item.productId)
+
+    const { data: products, error: productsError } = await supabaseServer
+      .from("products")
+      .select("id, title, price")
+      .in("id", productIds)
+      .eq("is_active", true)
+
+    if (productsError) {
+      throw new Error(productsError.message)
+    }
+
     const orderItems = order.items.map((item) => {
-      const product = products.find((product) => product.id === item.productId)
+      const product = products?.find((product) => product.id === item.productId)
 
       if (!product) {
         throw new Error(`Product not found: ${item.productId}`)
       }
 
       return {
-        title: product.title,
+        product_id: product.id,
+        product_title: product.title,
         price: product.price,
         quantity: item.quantity,
         total: product.price * item.quantity,
@@ -58,45 +71,52 @@ export async function POST(request: Request) {
 
     const total = orderItems.reduce((sum, item) => sum + item.total, 0)
 
-    const token = process.env.TELEGRAM_BOT_TOKEN
-    const chatId = process.env.TELEGRAM_CHAT_ID
+    const { data: createdOrder, error: orderError } = await supabaseServer
+      .from("orders")
+      .insert({
+        customer_name: order.name,
+        customer_phone: order.phone,
+        delivery_type: order.deliveryType,
+        address: order.address || null,
+        comment: order.comment || null,
+        total,
+        status: "new",
+      })
+      .select("id")
+      .single()
 
-    if (!token || !chatId) {
-      return NextResponse.json(
-        { message: "Telegram is not configured" },
-        { status: 500 }
-      )
+    if (orderError || !createdOrder) {
+      throw new Error(orderError?.message || "Order was not created")
     }
 
-    const message = formatOrderMessage({
-      ...order,
+    const { error: itemsError } = await supabaseServer
+      .from("order_items")
+      .insert(
+        orderItems.map((item) => ({
+          order_id: createdOrder.id,
+          ...item,
+        }))
+      )
+
+    if (itemsError) {
+      throw new Error(itemsError.message)
+    }
+
+    await sendTelegramMessage({
+      orderId: createdOrder.id,
+      name: order.name,
+      phone: order.phone,
+      deliveryType: order.deliveryType,
+      address: order.address,
+      comment: order.comment,
       items: orderItems,
       total,
     })
 
-    const response = await fetch(
-      `https://api.telegram.org/bot${token}/sendMessage`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          chat_id: chatId,
-          text: message,
-          parse_mode: "HTML",
-        }),
-      }
-    )
-
-    if (!response.ok) {
-      return NextResponse.json(
-        { message: "Telegram request failed" },
-        { status: 500 }
-      )
-    }
-
-    return NextResponse.json({ success: true })
+    return NextResponse.json({
+      success: true,
+      orderId: createdOrder.id,
+    })
   } catch (error) {
     console.error("Order API error:", error)
 
@@ -107,15 +127,59 @@ export async function POST(request: Request) {
   }
 }
 
-function formatOrderMessage(order: {
+async function sendTelegramMessage(order: {
+  orderId: string
   name: string
   phone: string
   deliveryType: "pickup" | "delivery"
   address?: string
   comment?: string
   items: {
-    title: string
+    product_title: string
     price: number
+    quantity: number
+    total: number
+  }[]
+  total: number
+}) {
+  const token = process.env.TELEGRAM_BOT_TOKEN
+  const chatId = process.env.TELEGRAM_CHAT_ID
+
+  if (!token || !chatId) {
+    throw new Error("Telegram is not configured")
+  }
+
+  const message = formatOrderMessage(order)
+
+  const response = await fetch(
+    `https://api.telegram.org/bot${token}/sendMessage`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        chat_id: chatId,
+        text: message,
+        parse_mode: "HTML",
+      }),
+    }
+  )
+
+  if (!response.ok) {
+    throw new Error("Telegram request failed")
+  }
+}
+
+function formatOrderMessage(order: {
+  orderId: string
+  name: string
+  phone: string
+  deliveryType: "pickup" | "delivery"
+  address?: string
+  comment?: string
+  items: {
+    product_title: string
     quantity: number
     total: number
   }[]
@@ -129,12 +193,16 @@ function formatOrderMessage(order: {
   const items = order.items
     .map(
       (item) =>
-        `• ${escapeHtml(item.title)} × ${item.quantity} — ${item.total}₴`
+        `• ${escapeHtml(item.product_title)} × ${item.quantity} — ${
+          item.total
+        }₴`
     )
     .join("\n")
 
   return `
 🛒 <b>Нове замовлення</b>
+
+🆔 <b>ID:</b> ${escapeHtml(order.orderId)}
 
 👤 <b>Імʼя:</b> ${escapeHtml(order.name)}
 📞 <b>Телефон:</b> ${escapeHtml(order.phone)}
