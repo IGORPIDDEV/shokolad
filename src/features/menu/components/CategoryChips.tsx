@@ -1,21 +1,29 @@
 "use client"
 
-const items = [
-  { id: "all", label: "Усе" },
-  { id: "coffee", label: "Кава" },
-  { id: "desserts", label: "Десерти" },
-  { id: "cakes", label: "Торти" },
-]
+import type { Category } from "@/features/categories/services/get-categories"
 
 type CategoryChipsProps = {
+  categories: Category[]
   activeCategory: string
   onChange: (category: string) => void
 }
 
 export function CategoryChips({
+  categories,
   activeCategory,
   onChange,
 }: CategoryChipsProps) {
+  const items = [
+    {
+      id: "all",
+      title: "Усе",
+    },
+    ...categories.map((category) => ({
+      id: category.slug,
+      title: category.title,
+    })),
+  ]
+
   return (
     <div className="border-border bg-background/85 lg:bg-card/70 sticky top-20 z-30 -mx-4 border-y px-4 py-3 backdrop-blur-xl sm:-mx-6 sm:px-6 lg:top-24 lg:mx-0 lg:rounded-full lg:border lg:px-3">
       <div className="flex gap-2 overflow-x-auto">
@@ -33,7 +41,7 @@ export function CategoryChips({
                   : "bg-card text-muted-foreground hover:bg-muted hover:text-foreground"
               }`}
             >
-              {item.label}
+              {item.title}
             </button>
           )
         })}

@@ -6,18 +6,28 @@ import { useRouter, useSearchParams } from "next/navigation"
 
 import type { Product } from "@/data/products"
 
+import type { Category } from "@/features/categories/services/get-categories"
+
 import { Input } from "@/components/ui/input"
 import { Container } from "@/components/shared/Container"
+
 import { ProductCard } from "@/features/products/components/ProductCard"
+
 import { CategoryChips } from "@/features/menu/components/CategoryChips"
 
 type MenuPageProps = {
   products: Product[]
+  categories: Category[]
   category: string
   query: string
 }
 
-export function MenuPage({ products, category, query }: MenuPageProps) {
+export function MenuPage({
+  products,
+  categories,
+  category,
+  query,
+}: MenuPageProps) {
   const router = useRouter()
   const searchParams = useSearchParams()
 
@@ -115,6 +125,7 @@ export function MenuPage({ products, category, query }: MenuPageProps) {
 
           <div className="mt-6">
             <CategoryChips
+              categories={categories}
               activeCategory={optimisticCategory}
               onChange={updateCategory}
             />
