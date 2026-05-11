@@ -22,25 +22,25 @@ export function Header() {
   const count = useCartStore((state) => state.getItemsCount())
   const total = useCartStore((state) => state.getTotal())
   return (
-    <header className="sticky top-0 z-50 bg-background/75 backdrop-blur-xl">
+    <header className="bg-background/75 sticky top-0 z-50 backdrop-blur-xl">
       <Container>
-        <div className="flex h-20 items-center justify-between border-b border-border/70">
+        <div className="border-border/70 flex h-20 items-center justify-between border-b">
           <Link href="/" className="flex items-center gap-3">
-            <span className="flex h-11 w-11 items-center justify-center rounded-full bg-primary text-base font-extrabold text-primary-foreground shadow-sm">
+            <span className="bg-primary text-primary-foreground flex h-11 w-11 items-center justify-center rounded-full text-base font-extrabold shadow-sm">
               Ш
             </span>
 
-            <span className="text-3xl font-extrabold tracking-[-0.06em] text-foreground">
+            <span className="text-foreground text-3xl font-extrabold tracking-[-0.06em]">
               Шоколад
             </span>
           </Link>
 
-          <nav className="hidden items-center gap-10 text-sm font-bold text-foreground lg:flex">
+          <nav className="text-foreground hidden items-center gap-10 text-sm font-bold lg:flex">
             {navItems.map((item) => (
               <Link
                 key={item.href}
                 href={item.href}
-                className="transition hover:text-muted-foreground"
+                className="hover:text-muted-foreground transition"
               >
                 {item.label}
               </Link>
@@ -51,45 +51,43 @@ export function Header() {
             <ThemeToggle />
 
             {/* Desktop */}
-              <CartSheet>
-                <Button
-                  className="relative hidden h-11 rounded-full px-5 lg:inline-flex"
-                  aria-label="Кошик"
-                >
-                  <ShoppingBag className="mr-2 h-4 w-4" />
-                  Кошик
+            <CartSheet>
+              <Button
+                className="relative hidden h-11 rounded-full px-5 lg:inline-flex"
+                aria-label="Кошик"
+              >
+                <ShoppingBag className="mr-2 h-4 w-4" />
+                Кошик
+                {count > 0 && (
+                  <span className="bg-primary-foreground/15 ml-2 rounded-full px-2 py-0.5 text-xs font-extrabold">
+                    {count}
+                  </span>
+                )}
+                {count > 0 && (
+                  <span className="ml-2 text-sm font-bold opacity-80">
+                    {total}₴
+                  </span>
+                )}
+              </Button>
+            </CartSheet>
 
-                  {count > 0 && (
-                    <span className="ml-2 rounded-full bg-primary-foreground/15 px-2 py-0.5 text-xs font-extrabold">
-                      {count}
-                    </span>
-                  )}
+            {/* Mobile */}
+            <CartSheet>
+              <Button
+                variant="outline"
+                size="icon-sm"
+                className="bg-card/80 relative shadow-sm backdrop-blur lg:hidden"
+                aria-label="Кошик"
+              >
+                <ShoppingBag className="h-5 w-5" />
 
-                  {count > 0 && (
-                    <span className="ml-2 text-sm font-bold opacity-80">
-                      {total}₴
-                    </span>
-                  )}
-                </Button>
-              </CartSheet>
-
-              {/* Mobile */}
-              <CartSheet>
-                <Button
-                  variant="outline"
-                  size="icon-sm"
-                  className="relative bg-card/80 shadow-sm backdrop-blur lg:hidden"
-                  aria-label="Кошик"
-                >
-                  <ShoppingBag className="h-5 w-5" />
-
-                  {count > 0 && (
-                    <span className="absolute -right-1 -top-1 flex h-5 min-w-5 items-center justify-center rounded-full bg-primary px-1.5 text-[11px] font-extrabold text-primary-foreground shadow-sm">
-                      {count}
-                    </span>
-                  )}
-                </Button>
-              </CartSheet>
+                {count > 0 && (
+                  <span className="bg-primary text-primary-foreground absolute -top-1 -right-1 flex h-5 min-w-5 items-center justify-center rounded-full px-1.5 text-[11px] font-extrabold shadow-sm">
+                    {count}
+                  </span>
+                )}
+              </Button>
+            </CartSheet>
 
             <MobileMenu />
           </div>

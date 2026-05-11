@@ -24,34 +24,26 @@ const buttonVariants = cva(
         destructive:
           "bg-destructive text-white shadow-sm hover:scale-[1.01] hover:opacity-90 focus-visible:border-destructive/40 focus-visible:ring-destructive/20 dark:focus-visible:ring-destructive/40",
 
-        link:
-          "h-auto rounded-none border-transparent bg-transparent px-0 text-primary underline-offset-4 shadow-none hover:underline",
+        link: "h-auto rounded-none border-transparent bg-transparent px-0 text-primary underline-offset-4 shadow-none hover:underline",
       },
 
       size: {
         default:
           "h-[52px] gap-2 px-6 has-data-[icon=inline-end]:pr-5 has-data-[icon=inline-start]:pl-5",
 
-        xs:
-          "h-8 gap-1.5 px-3 text-xs [&_svg:not([class*='size-'])]:size-3",
+        xs: "h-8 gap-1.5 px-3 text-xs [&_svg:not([class*='size-'])]:size-3",
 
-        sm:
-          "h-10 gap-1.5 px-4 text-sm [&_svg:not([class*='size-'])]:size-3.5",
+        sm: "h-10 gap-1.5 px-4 text-sm [&_svg:not([class*='size-'])]:size-3.5",
 
-        lg:
-          "h-14 gap-2 px-8 text-base [&_svg:not([class*='size-'])]:size-5",
+        lg: "h-14 gap-2 px-8 text-base [&_svg:not([class*='size-'])]:size-5",
 
-        icon:
-          "size-11 p-0 [&_svg:not([class*='size-'])]:size-5",
+        icon: "size-11 p-0 [&_svg:not([class*='size-'])]:size-5",
 
-        "icon-xs":
-          "size-8 p-0 [&_svg:not([class*='size-'])]:size-3.5",
+        "icon-xs": "size-8 p-0 [&_svg:not([class*='size-'])]:size-3.5",
 
-        "icon-sm":
-          "size-10 p-0 [&_svg:not([class*='size-'])]:size-4",
+        "icon-sm": "size-10 p-0 [&_svg:not([class*='size-'])]:size-4",
 
-        "icon-lg":
-          "size-12 p-0 [&_svg:not([class*='size-'])]:size-5",
+        "icon-lg": "size-12 p-0 [&_svg:not([class*='size-'])]:size-5",
       },
     },
 

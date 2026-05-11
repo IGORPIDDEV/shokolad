@@ -106,12 +106,12 @@ export function CheckoutSheet({ children }: CheckoutSheetProps) {
 
       <SheetContent
         side="bottom"
-        className="mx-auto flex h-[92dvh] max-h-[92dvh] w-full max-w-3xl flex-col overflow-hidden rounded-t-[2rem] border-border bg-background p-0 [&>button]:hidden"
+        className="border-border bg-background mx-auto flex h-[92dvh] max-h-[92dvh] w-full max-w-3xl flex-col overflow-hidden rounded-t-[2rem] p-0 [&>button]:hidden"
       >
         <SheetClose asChild>
           <button
             type="button"
-            className="absolute right-4 top-4 z-50 flex h-11 w-11 items-center justify-center rounded-full border border-white/40 bg-background/80 text-foreground shadow-[0_8px_30px_rgba(0,0,0,0.12)] backdrop-blur-xl transition hover:scale-105 hover:bg-background"
+            className="bg-background/80 text-foreground hover:bg-background absolute top-4 right-4 z-50 flex h-11 w-11 items-center justify-center rounded-full border border-white/40 shadow-[0_8px_30px_rgba(0,0,0,0.12)] backdrop-blur-xl transition hover:scale-105"
             aria-label="Закрити"
           >
             <X className="h-5 w-5" />
@@ -123,34 +123,34 @@ export function CheckoutSheet({ children }: CheckoutSheetProps) {
             <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(197,138,92,0.18),transparent_45%)]" />
 
             <div className="relative z-10 w-full max-w-md">
-              <div className="mx-auto flex h-24 w-24 items-center justify-center rounded-full border border-border bg-card shadow-[0_20px_60px_rgba(58,36,28,0.12)]">
-                <div className="flex h-16 w-16 items-center justify-center rounded-full bg-primary text-primary-foreground">
+              <div className="border-border bg-card mx-auto flex h-24 w-24 items-center justify-center rounded-full border shadow-[0_20px_60px_rgba(58,36,28,0.12)]">
+                <div className="bg-primary text-primary-foreground flex h-16 w-16 items-center justify-center rounded-full">
                   <CheckCircle2 className="h-9 w-9" />
                 </div>
               </div>
 
-              <p className="mt-8 text-[11px] font-extrabold uppercase tracking-[0.24em] text-muted-foreground">
+              <p className="text-muted-foreground mt-8 text-[11px] font-extrabold tracking-[0.24em] uppercase">
                 Замовлення оформлено
               </p>
 
-              <h2 className="mt-3 text-4xl font-black leading-[0.95] tracking-[-0.065em] text-foreground sm:text-5xl">
+              <h2 className="text-foreground mt-3 text-4xl leading-[0.95] font-black tracking-[-0.065em] sm:text-5xl">
                 Дякуємо за
                 <br />
                 ваше замовлення
               </h2>
 
-              <p className="mx-auto mt-5 max-w-md text-base font-medium leading-7 text-muted-foreground">
+              <p className="text-muted-foreground mx-auto mt-5 max-w-md text-base leading-7 font-medium">
                 Ми вже отримали ваше замовлення та скоро звʼяжемось для
                 підтвердження.
               </p>
 
-              <div className="mt-8 rounded-[1.75rem] border border-border bg-card/80 p-4 shadow-sm backdrop-blur">
+              <div className="border-border bg-card/80 mt-8 rounded-[1.75rem] border p-4 shadow-sm backdrop-blur">
                 <div className="flex items-center justify-between gap-4">
-                  <span className="text-sm font-bold text-muted-foreground">
+                  <span className="text-muted-foreground text-sm font-bold">
                     Сума замовлення
                   </span>
 
-                  <span className="text-2xl font-black tracking-[-0.045em] text-foreground">
+                  <span className="text-foreground text-2xl font-black tracking-[-0.045em]">
                     {successTotal}₴
                   </span>
                 </div>
@@ -171,13 +171,13 @@ export function CheckoutSheet({ children }: CheckoutSheetProps) {
           </div>
         ) : (
           <>
-            <div className="border-b border-border px-5 py-5">
+            <div className="border-border border-b px-5 py-5">
               <SheetHeader className="text-left">
-                <SheetTitle className="text-3xl font-extrabold tracking-[-0.055em] text-foreground">
+                <SheetTitle className="text-foreground text-3xl font-extrabold tracking-[-0.055em]">
                   Оформлення
                 </SheetTitle>
 
-                <SheetDescription className="mt-1 text-sm font-medium text-muted-foreground">
+                <SheetDescription className="text-muted-foreground mt-1 text-sm font-medium">
                   Заповніть дані, щоб ми могли підтвердити замовлення.
                 </SheetDescription>
               </SheetHeader>
@@ -188,8 +188,8 @@ export function CheckoutSheet({ children }: CheckoutSheetProps) {
               className="flex min-h-0 flex-1 flex-col"
             >
               <div className="min-h-0 flex-1 overflow-y-auto px-4 py-4">
-                <div className="rounded-[1.75rem] border border-border bg-card p-4">
-                  <p className="mb-4 text-sm font-bold text-muted-foreground">
+                <div className="border-border bg-card rounded-[1.75rem] border p-4">
+                  <p className="text-muted-foreground mb-4 text-sm font-bold">
                     Ваші дані
                   </p>
 
@@ -200,7 +200,7 @@ export function CheckoutSheet({ children }: CheckoutSheetProps) {
                       </Label>
 
                       <div className="relative">
-                        <User className="absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+                        <User className="text-muted-foreground absolute top-1/2 left-4 h-4 w-4 -translate-y-1/2" />
 
                         <Input
                           id="name"
@@ -211,7 +211,7 @@ export function CheckoutSheet({ children }: CheckoutSheetProps) {
                       </div>
 
                       {errors.name && (
-                        <p className="text-sm font-bold text-destructive">
+                        <p className="text-destructive text-sm font-bold">
                           {errors.name.message}
                         </p>
                       )}
@@ -223,7 +223,7 @@ export function CheckoutSheet({ children }: CheckoutSheetProps) {
                       </Label>
 
                       <div className="relative">
-                        <Phone className="absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+                        <Phone className="text-muted-foreground absolute top-1/2 left-4 h-4 w-4 -translate-y-1/2" />
 
                         <PatternFormat
                           format="+38 (###) ### ## ##"
@@ -244,7 +244,7 @@ export function CheckoutSheet({ children }: CheckoutSheetProps) {
                       </div>
 
                       {errors.phone && (
-                        <p className="text-sm font-bold text-destructive">
+                        <p className="text-destructive text-sm font-bold">
                           {errors.phone.message}
                         </p>
                       )}
@@ -252,8 +252,8 @@ export function CheckoutSheet({ children }: CheckoutSheetProps) {
                   </div>
                 </div>
 
-                <div className="mt-4 rounded-[1.75rem] border border-border bg-card p-4">
-                  <p className="mb-4 text-sm font-bold text-muted-foreground">
+                <div className="border-border bg-card mt-4 rounded-[1.75rem] border p-4">
+                  <p className="text-muted-foreground mb-4 text-sm font-bold">
                     Спосіб отримання
                   </p>
 
@@ -268,23 +268,23 @@ export function CheckoutSheet({ children }: CheckoutSheetProps) {
                     }
                     className="grid gap-3"
                   >
-                    <Label className="flex cursor-pointer items-center gap-3 rounded-2xl border border-border bg-background p-4">
+                    <Label className="border-border bg-background flex cursor-pointer items-center gap-3 rounded-2xl border p-4">
                       <RadioGroupItem value="pickup" />
 
                       <div>
-                        <p className="font-bold text-foreground">Самовивіз</p>
-                        <p className="text-sm text-muted-foreground">
+                        <p className="text-foreground font-bold">Самовивіз</p>
+                        <p className="text-muted-foreground text-sm">
                           Забрати з кавʼярні
                         </p>
                       </div>
                     </Label>
 
-                    <Label className="flex cursor-pointer items-center gap-3 rounded-2xl border border-border bg-background p-4">
+                    <Label className="border-border bg-background flex cursor-pointer items-center gap-3 rounded-2xl border p-4">
                       <RadioGroupItem value="delivery" />
 
                       <div>
-                        <p className="font-bold text-foreground">Доставка</p>
-                        <p className="text-sm text-muted-foreground">
+                        <p className="text-foreground font-bold">Доставка</p>
+                        <p className="text-muted-foreground text-sm">
                           Курʼєром по місту
                         </p>
                       </div>
@@ -298,7 +298,7 @@ export function CheckoutSheet({ children }: CheckoutSheetProps) {
                       </Label>
 
                       <div className="relative">
-                        <MapPin className="absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+                        <MapPin className="text-muted-foreground absolute top-1/2 left-4 h-4 w-4 -translate-y-1/2" />
 
                         <Input
                           id="address"
@@ -309,7 +309,7 @@ export function CheckoutSheet({ children }: CheckoutSheetProps) {
                       </div>
 
                       {errors.address && (
-                        <p className="text-sm font-bold text-destructive">
+                        <p className="text-destructive text-sm font-bold">
                           {errors.address.message}
                         </p>
                       )}
@@ -317,7 +317,7 @@ export function CheckoutSheet({ children }: CheckoutSheetProps) {
                   )}
                 </div>
 
-                <div className="mt-4 rounded-[1.75rem] border border-border bg-card p-4">
+                <div className="border-border bg-card mt-4 rounded-[1.75rem] border p-4">
                   <div className="space-y-2">
                     <Label htmlFor="comment" className={labelClassName}>
                       Коментар
@@ -331,15 +331,15 @@ export function CheckoutSheet({ children }: CheckoutSheetProps) {
                     />
 
                     {errors.comment && (
-                      <p className="text-sm font-bold text-destructive">
+                      <p className="text-destructive text-sm font-bold">
                         {errors.comment.message}
                       </p>
                     )}
                   </div>
                 </div>
 
-                <div className="mt-4 rounded-[1.75rem] border border-border bg-card p-4">
-                  <p className="mb-3 text-sm font-bold text-muted-foreground">
+                <div className="border-border bg-card mt-4 rounded-[1.75rem] border p-4">
+                  <p className="text-muted-foreground mb-3 text-sm font-bold">
                     Замовлення
                   </p>
 
@@ -349,11 +349,11 @@ export function CheckoutSheet({ children }: CheckoutSheetProps) {
                         key={item.product.id}
                         className="flex items-center justify-between gap-3 text-sm"
                       >
-                        <span className="font-medium text-foreground">
+                        <span className="text-foreground font-medium">
                           {item.product.title} × {item.quantity}
                         </span>
 
-                        <span className="font-bold text-foreground">
+                        <span className="text-foreground font-bold">
                           {item.product.price * item.quantity}₴
                         </span>
                       </div>
@@ -362,19 +362,19 @@ export function CheckoutSheet({ children }: CheckoutSheetProps) {
                 </div>
               </div>
 
-              <div className="shrink-0 border-t border-border bg-background/90 p-4 pb-[calc(1rem+env(safe-area-inset-bottom))] backdrop-blur">
+              <div className="border-border bg-background/90 shrink-0 border-t p-4 pb-[calc(1rem+env(safe-area-inset-bottom))] backdrop-blur">
                 <div className="mb-4 flex items-center justify-between">
-                  <span className="text-sm font-bold text-muted-foreground">
+                  <span className="text-muted-foreground text-sm font-bold">
                     Разом
                   </span>
 
-                  <span className="text-2xl font-extrabold tracking-[-0.045em] text-foreground">
+                  <span className="text-foreground text-2xl font-extrabold tracking-[-0.045em]">
                     {total}₴
                   </span>
                 </div>
 
                 {error && (
-                  <p className="mb-3 rounded-2xl bg-destructive/10 px-4 py-3 text-sm font-bold text-destructive">
+                  <p className="bg-destructive/10 text-destructive mb-3 rounded-2xl px-4 py-3 text-sm font-bold">
                     {error}
                   </p>
                 )}

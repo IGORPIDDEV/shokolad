@@ -11,7 +11,7 @@ import {
   SheetHeader,
   SheetTitle,
   SheetTrigger,
-  SheetDescription
+  SheetDescription,
 } from "@/components/ui/sheet"
 import { useCartStore } from "@/store/cart-store"
 import { CheckoutSheet } from "@/features/checkout/components/CheckoutSheet"
@@ -33,30 +33,29 @@ export function CartSheet({ children }: CartSheetProps) {
 
       <SheetContent
         side="bottom"
-        className="mx-auto flex h-[92dvh] max-h-[92dvh] w-full max-w-3xl flex-col overflow-hidden rounded-t-[2rem] border-border bg-background p-0 [&>button]:hidden"
+        className="border-border bg-background mx-auto flex h-[92dvh] max-h-[92dvh] w-full max-w-3xl flex-col overflow-hidden rounded-t-[2rem] p-0 [&>button]:hidden"
       >
         <SheetClose asChild>
           <button
             type="button"
-            className="absolute right-4 top-4 z-50 flex h-11 w-11 items-center justify-center rounded-full border border-white/40 bg-background/80 text-foreground shadow-[0_8px_30px_rgba(0,0,0,0.12)] backdrop-blur-xl transition hover:scale-105 hover:bg-background"
+            className="bg-background/80 text-foreground hover:bg-background absolute top-4 right-4 z-50 flex h-11 w-11 items-center justify-center rounded-full border border-white/40 shadow-[0_8px_30px_rgba(0,0,0,0.12)] backdrop-blur-xl transition hover:scale-105"
             aria-label="Закрити"
           >
             <X className="h-5 w-5" />
           </button>
         </SheetClose>
 
-        <div className="border-b border-border px-5 py-5">
+        <div className="border-border border-b px-5 py-5">
           <SheetHeader className="text-left">
-            <SheetTitle className="text-3xl font-extrabold tracking-[-0.055em] text-foreground">
+            <SheetTitle className="text-foreground text-3xl font-extrabold tracking-[-0.055em]">
               Кошик
             </SheetTitle>
             <SheetDescription className="sr-only">
-                Перегляд товарів у кошику та оформлення замовлення
+              Перегляд товарів у кошику та оформлення замовлення
             </SheetDescription>
           </SheetHeader>
-          
 
-          <p className="mt-1 text-sm font-medium text-muted-foreground">
+          <p className="text-muted-foreground mt-1 text-sm font-medium">
             {items.length > 0
               ? "Перевірте замовлення перед оформленням"
               : "Ваш кошик поки порожній"}
@@ -65,16 +64,16 @@ export function CartSheet({ children }: CartSheetProps) {
 
         <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain px-4 py-4">
           {items.length === 0 ? (
-            <div className="flex h-full flex-col items-center justify-center rounded-[2rem] border border-border bg-card p-8 text-center">
-              <div className="flex h-16 w-16 items-center justify-center rounded-full bg-muted">
-                <ShoppingBag className="h-7 w-7 text-muted-foreground" />
+            <div className="border-border bg-card flex h-full flex-col items-center justify-center rounded-[2rem] border p-8 text-center">
+              <div className="bg-muted flex h-16 w-16 items-center justify-center rounded-full">
+                <ShoppingBag className="text-muted-foreground h-7 w-7" />
               </div>
 
-              <p className="mt-5 text-2xl font-extrabold tracking-[-0.045em] text-foreground">
+              <p className="text-foreground mt-5 text-2xl font-extrabold tracking-[-0.045em]">
                 Тут поки пусто
               </p>
 
-              <p className="mt-2 text-sm leading-6 text-muted-foreground">
+              <p className="text-muted-foreground mt-2 text-sm leading-6">
                 Додайте каву, десерт або торт, щоб оформити замовлення.
               </p>
             </div>
@@ -83,9 +82,9 @@ export function CartSheet({ children }: CartSheetProps) {
               {items.map((item) => (
                 <div
                   key={item.product.id}
-                  className="flex gap-3 rounded-[1.5rem] border border-border bg-card p-3 shadow-sm"
+                  className="border-border bg-card flex gap-3 rounded-[1.5rem] border p-3 shadow-sm"
                 >
-                  <div className="relative h-24 w-24 shrink-0 overflow-hidden rounded-[1.2rem] bg-muted">
+                  <div className="bg-muted relative h-24 w-24 shrink-0 overflow-hidden rounded-[1.2rem]">
                     <Image
                       src={item.product.image}
                       alt={item.product.title}
@@ -98,11 +97,11 @@ export function CartSheet({ children }: CartSheetProps) {
                   <div className="min-w-0 flex-1">
                     <div className="flex items-start justify-between gap-3">
                       <div>
-                        <p className="line-clamp-1 text-base font-extrabold tracking-[-0.035em] text-foreground">
+                        <p className="text-foreground line-clamp-1 text-base font-extrabold tracking-[-0.035em]">
                           {item.product.title}
                         </p>
 
-                        <p className="mt-1 text-xs font-bold text-muted-foreground">
+                        <p className="text-muted-foreground mt-1 text-xs font-bold">
                           {item.product.weight}
                         </p>
                       </div>
@@ -110,7 +109,7 @@ export function CartSheet({ children }: CartSheetProps) {
                       <button
                         type="button"
                         onClick={() => removeItem(item.product.id)}
-                        className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-muted text-muted-foreground transition hover:text-foreground"
+                        className="bg-muted text-muted-foreground hover:text-foreground flex h-9 w-9 shrink-0 items-center justify-center rounded-full transition"
                         aria-label="Видалити"
                       >
                         <Trash2 className="h-4 w-4" />
@@ -128,7 +127,7 @@ export function CartSheet({ children }: CartSheetProps) {
                           <Minus className="h-3.5 w-3.5" />
                         </Button>
 
-                        <span className="w-6 text-center text-sm font-bold text-foreground">
+                        <span className="text-foreground w-6 text-center text-sm font-bold">
                           {item.quantity}
                         </span>
 
@@ -142,7 +141,7 @@ export function CartSheet({ children }: CartSheetProps) {
                         </Button>
                       </div>
 
-                      <p className="text-lg font-extrabold tracking-[-0.04em] text-foreground">
+                      <p className="text-foreground text-lg font-extrabold tracking-[-0.04em]">
                         {item.product.price * item.quantity}₴
                       </p>
                     </div>
@@ -153,22 +152,22 @@ export function CartSheet({ children }: CartSheetProps) {
           )}
         </div>
 
-        <div className="shrink-0 border-t border-border bg-background/90 p-4 pb-[calc(1rem+env(safe-area-inset-bottom))] backdrop-blur">
+        <div className="border-border bg-background/90 shrink-0 border-t p-4 pb-[calc(1rem+env(safe-area-inset-bottom))] backdrop-blur">
           <div className="mb-4 flex items-center justify-between">
-            <span className="text-sm font-bold text-muted-foreground">
+            <span className="text-muted-foreground text-sm font-bold">
               Разом
             </span>
 
-            <span className="text-2xl font-extrabold tracking-[-0.045em] text-foreground">
+            <span className="text-foreground text-2xl font-extrabold tracking-[-0.045em]">
               {total}₴
             </span>
           </div>
 
           <CheckoutSheet>
             <Button className="w-full" disabled={items.length === 0}>
-                Оформити замовлення
+              Оформити замовлення
             </Button>
-        </CheckoutSheet>
+          </CheckoutSheet>
         </div>
       </SheetContent>
     </Sheet>

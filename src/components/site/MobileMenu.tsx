@@ -20,7 +20,7 @@ import {
   SheetHeader,
   SheetTitle,
   SheetTrigger,
-  SheetDescription
+  SheetDescription,
 } from "@/components/ui/sheet"
 
 const navItems = [
@@ -53,16 +53,16 @@ export function MobileMenu() {
 
       <SheetContent
         side="right"
-        className="flex w-[92vw] max-w-sm flex-col overflow-hidden border-border bg-background p-0 [&>button]:hidden"
+        className="border-border bg-background flex w-[92vw] max-w-sm flex-col overflow-hidden p-0 [&>button]:hidden"
       >
-        <SheetHeader className="border-b border-border px-5 py-4 text-left">
+        <SheetHeader className="border-border border-b px-5 py-4 text-left">
           <div className="flex items-center justify-between gap-4">
             <SheetTitle className="flex items-center gap-3">
-              <span className="flex h-10 w-10 items-center justify-center rounded-full bg-primary text-sm font-extrabold text-primary-foreground shadow-sm">
+              <span className="bg-primary text-primary-foreground flex h-10 w-10 items-center justify-center rounded-full text-sm font-extrabold shadow-sm">
                 Ш
               </span>
 
-              <span className="text-2xl font-extrabold tracking-[-0.055em] text-foreground">
+              <span className="text-foreground text-2xl font-extrabold tracking-[-0.055em]">
                 Шоколад
               </span>
             </SheetTitle>
@@ -74,7 +74,7 @@ export function MobileMenu() {
             <SheetClose asChild>
               <button
                 type="button"
-                className="flex h-10 w-10 items-center justify-center rounded-full border border-border bg-card text-foreground shadow-sm transition hover:bg-muted"
+                className="border-border bg-card text-foreground hover:bg-muted flex h-10 w-10 items-center justify-center rounded-full border shadow-sm transition"
                 aria-label="Закрити меню"
               >
                 <X className="h-5 w-5" />
@@ -84,12 +84,12 @@ export function MobileMenu() {
         </SheetHeader>
 
         <div className="min-h-0 flex-1 overflow-y-auto px-5 py-5">
-          <div className="rounded-[1.75rem] border border-border bg-card/80 p-4 shadow-[0_14px_45px_rgba(58,36,28,0.07)]">
-            <p className="text-[10px] font-bold uppercase tracking-[0.22em] text-muted-foreground">
+          <div className="border-border bg-card/80 rounded-[1.75rem] border p-4 shadow-[0_14px_45px_rgba(58,36,28,0.07)]">
+            <p className="text-muted-foreground text-[10px] font-bold tracking-[0.22em] uppercase">
               Кавʼярня & десерти
             </p>
 
-            <p className="mt-3 max-w-xs text-3xl font-extrabold leading-[0.95] tracking-[-0.055em] text-foreground">
+            <p className="text-foreground mt-3 max-w-xs text-3xl leading-[0.95] font-extrabold tracking-[-0.055em]">
               Солодкі моменти щодня
             </p>
 
@@ -100,10 +100,10 @@ export function MobileMenu() {
                 return (
                   <div
                     key={feature.label}
-                    className="rounded-lg bg-muted px-2 py-3 text-center"
+                    className="bg-muted rounded-lg px-2 py-3 text-center"
                   >
-                    <Icon className="mx-auto h-5 w-5 text-foreground" />
-                    <p className="mt-2 text-[10px] font-bold leading-tight text-muted-foreground">
+                    <Icon className="text-foreground mx-auto h-5 w-5" />
+                    <p className="text-muted-foreground mt-2 text-[10px] leading-tight font-bold">
                       {feature.label}
                     </p>
                   </div>
@@ -117,19 +117,19 @@ export function MobileMenu() {
               <SheetClose asChild key={item.href}>
                 <Link
                   href={item.href}
-                  className="group flex items-center justify-between rounded-[1.35rem] border border-border bg-card/80 px-4 py-3.5 shadow-sm transition hover:bg-muted"
+                  className="group border-border bg-card/80 hover:bg-muted flex items-center justify-between rounded-[1.35rem] border px-4 py-3.5 shadow-sm transition"
                 >
                   <span>
-                    <span className="block text-lg font-extrabold tracking-[-0.035em] text-foreground">
+                    <span className="text-foreground block text-lg font-extrabold tracking-[-0.035em]">
                       {item.label}
                     </span>
 
-                    <span className="mt-0.5 block text-sm font-medium text-muted-foreground">
+                    <span className="text-muted-foreground mt-0.5 block text-sm font-medium">
                       {item.description}
                     </span>
                   </span>
 
-                  <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-muted text-foreground transition group-hover:bg-primary group-hover:text-primary-foreground">
+                  <span className="bg-muted text-foreground group-hover:bg-primary group-hover:text-primary-foreground flex h-10 w-10 shrink-0 items-center justify-center rounded-full transition">
                     <ArrowUpRight className="h-4 w-4" />
                   </span>
                 </Link>
@@ -138,13 +138,13 @@ export function MobileMenu() {
           </nav>
         </div>
 
-        <div className="border-t border-border bg-background/90 p-5 pb-[calc(1.25rem+env(safe-area-inset-bottom))] backdrop-blur">
+        <div className="border-border bg-background/90 border-t p-5 pb-[calc(1.25rem+env(safe-area-inset-bottom))] backdrop-blur">
           <Button className="w-full">
             <ShoppingBag className="mr-2 h-4 w-4" />
             Перейти в кошик
           </Button>
 
-          <p className="mt-3 text-center text-xs font-medium text-muted-foreground">
+          <p className="text-muted-foreground mt-3 text-center text-xs font-medium">
             Працюємо щодня · 10:00–21:00
           </p>
         </div>

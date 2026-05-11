@@ -17,7 +17,7 @@ export function CategoryChips({
   onChange,
 }: CategoryChipsProps) {
   return (
-    <div className="sticky top-20 z-30 -mx-4 border-y border-border bg-background/85 px-4 py-3 backdrop-blur-xl sm:-mx-6 sm:px-6 lg:top-24 lg:mx-0 lg:rounded-full lg:border lg:bg-card/70 lg:px-3">
+    <div className="border-border bg-background/85 lg:bg-card/70 sticky top-20 z-30 -mx-4 border-y px-4 py-3 backdrop-blur-xl sm:-mx-6 sm:px-6 lg:top-24 lg:mx-0 lg:rounded-full lg:border lg:px-3">
       <div className="flex gap-2 overflow-x-auto">
         {items.map((item) => {
           const isActive = activeCategory === item.id

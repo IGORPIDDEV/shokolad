@@ -14,7 +14,7 @@ import {
   SheetHeader,
   SheetTitle,
   SheetTrigger,
-  SheetDescription
+  SheetDescription,
 } from "@/components/ui/sheet"
 
 type ProductSheetProps = {
@@ -33,20 +33,20 @@ export function ProductSheet({ product, children }: ProductSheetProps) {
 
       <SheetContent
         side="bottom"
-        className="mx-auto flex h-[92dvh] max-h-[92dvh] w-full max-w-3xl flex-col overflow-hidden rounded-t-[2rem] border-border bg-background p-0 [&>button]:hidden"
+        className="border-border bg-background mx-auto flex h-[92dvh] max-h-[92dvh] w-full max-w-3xl flex-col overflow-hidden rounded-t-[2rem] p-0 [&>button]:hidden"
       >
         <SheetClose asChild>
           <button
             type="button"
-            className="absolute right-4 top-4 z-50 flex h-11 w-11 items-center justify-center rounded-full border border-white/40 bg-background/80 text-foreground shadow-[0_8px_30px_rgba(0,0,0,0.12)] backdrop-blur-xl transition hover:scale-105 hover:bg-background"
+            className="bg-background/80 text-foreground hover:bg-background absolute top-4 right-4 z-50 flex h-11 w-11 items-center justify-center rounded-full border border-white/40 shadow-[0_8px_30px_rgba(0,0,0,0.12)] backdrop-blur-xl transition hover:scale-105"
             aria-label="Закрити"
           >
             <X className="h-5 w-5" />
           </button>
         </SheetClose>
 
-        <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain px-4 pb-8 pt-4 sm:px-6 sm:pt-6">
-          <div className="relative aspect-[4/3] overflow-hidden rounded-[1.75rem] bg-muted sm:aspect-[16/10]">
+        <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain px-4 pt-4 pb-8 sm:px-6 sm:pt-6">
+          <div className="bg-muted relative aspect-[4/3] overflow-hidden rounded-[1.75rem] sm:aspect-[16/10]">
             <Image
               src={product.image}
               alt={product.title}
@@ -56,14 +56,14 @@ export function ProductSheet({ product, children }: ProductSheetProps) {
             />
 
             {product.badge && (
-              <div className="absolute left-4 top-4 rounded-full bg-background/85 px-3 py-1.5 text-xs font-bold text-foreground backdrop-blur">
+              <div className="bg-background/85 text-foreground absolute top-4 left-4 rounded-full px-3 py-1.5 text-xs font-bold backdrop-blur">
                 {product.badge}
               </div>
             )}
           </div>
 
           <SheetHeader className="mt-6 text-left">
-            <SheetTitle className="text-4xl font-extrabold tracking-[-0.055em] text-foreground sm:text-5xl">
+            <SheetTitle className="text-foreground text-4xl font-extrabold tracking-[-0.055em] sm:text-5xl">
               {product.title}
             </SheetTitle>
           </SheetHeader>
@@ -72,16 +72,16 @@ export function ProductSheet({ product, children }: ProductSheetProps) {
             Детальна інформація про товар та додавання в кошик
           </SheetDescription>
 
-          <p className="mt-3 text-base font-medium leading-7 text-muted-foreground sm:text-lg">
+          <p className="text-muted-foreground mt-3 text-base leading-7 font-medium sm:text-lg">
             {product.description}
           </p>
 
           <div className="mt-5 flex flex-wrap gap-2">
-            <span className="rounded-full bg-muted px-3 py-1.5 text-xs font-bold text-muted-foreground">
+            <span className="bg-muted text-muted-foreground rounded-full px-3 py-1.5 text-xs font-bold">
               {product.weight}
             </span>
 
-            <span className="rounded-full bg-muted px-3 py-1.5 text-xs font-bold text-muted-foreground">
+            <span className="bg-muted text-muted-foreground rounded-full px-3 py-1.5 text-xs font-bold">
               {product.category}
             </span>
           </div>
@@ -93,14 +93,14 @@ export function ProductSheet({ product, children }: ProductSheetProps) {
             <InfoBlock title="Смакує разом з" items={product.pairings} />
           </div>
 
-          <div className="mt-8 rounded-[1.75rem] border border-border bg-card p-4">
+          <div className="border-border bg-card mt-8 rounded-[1.75rem] border p-4">
             <div className="flex items-center justify-between gap-4">
               <div>
-                <p className="text-sm font-bold text-muted-foreground">
+                <p className="text-muted-foreground text-sm font-bold">
                   Кількість
                 </p>
 
-                <p className="mt-1 text-3xl font-extrabold tracking-[-0.045em] text-foreground">
+                <p className="text-foreground mt-1 text-3xl font-extrabold tracking-[-0.045em]">
                   {total}₴
                 </p>
               </div>
@@ -116,7 +116,7 @@ export function ProductSheet({ product, children }: ProductSheetProps) {
                   <Minus className="h-4 w-4" />
                 </Button>
 
-                <span className="w-6 text-center text-lg font-bold text-foreground">
+                <span className="text-foreground w-6 text-center text-lg font-bold">
                   {quantity}
                 </span>
 
@@ -134,33 +134,27 @@ export function ProductSheet({ product, children }: ProductSheetProps) {
           </div>
         </div>
 
-        <div className="shrink-0 border-t border-border bg-background/90 p-4 pb-[calc(1rem+env(safe-area-inset-bottom))] backdrop-blur">
+        <div className="border-border bg-background/90 shrink-0 border-t p-4 pb-[calc(1rem+env(safe-area-inset-bottom))] backdrop-blur">
           <Button className="w-full" onClick={() => addItem(product, quantity)}>
             <ShoppingBag className="mr-2 h-5 w-5" />
             Додати в кошик · {total}₴
-        </Button>
+          </Button>
         </div>
       </SheetContent>
     </Sheet>
   )
 }
 
-function InfoBlock({
-  title,
-  items,
-}: {
-  title: string
-  items: string[]
-}) {
+function InfoBlock({ title, items }: { title: string; items: string[] }) {
   return (
-    <div className="rounded-[1.5rem] border border-border bg-card p-4">
-      <p className="text-sm font-bold text-foreground">{title}</p>
+    <div className="border-border bg-card rounded-[1.5rem] border p-4">
+      <p className="text-foreground text-sm font-bold">{title}</p>
 
       <div className="mt-3 flex flex-wrap gap-2">
         {items.map((item) => (
           <span
             key={item}
-            className="rounded-full bg-muted px-3 py-1.5 text-xs font-bold text-muted-foreground"
+            className="bg-muted text-muted-foreground rounded-full px-3 py-1.5 text-xs font-bold"
           >
             {item}
           </span>

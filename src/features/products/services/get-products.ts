@@ -22,8 +22,7 @@ export function getProducts({
   const normalizedQuery = query.trim().toLowerCase()
 
   const filtered = products.filter((product) => {
-    const matchesCategory =
-      category === "all" || product.category === category
+    const matchesCategory = category === "all" || product.category === category
 
     const matchesQuery =
       !normalizedQuery ||
