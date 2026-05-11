@@ -11,6 +11,7 @@ import {
   SheetHeader,
   SheetTitle,
   SheetTrigger,
+  SheetDescription
 } from "@/components/ui/sheet"
 import { useCartStore } from "@/store/cart-store"
 
@@ -48,7 +49,11 @@ export function CartSheet({ children }: CartSheetProps) {
             <SheetTitle className="text-3xl font-extrabold tracking-[-0.055em] text-foreground">
               Кошик
             </SheetTitle>
+            <SheetDescription className="sr-only">
+                Перегляд товарів у кошику та оформлення замовлення
+            </SheetDescription>
           </SheetHeader>
+          
 
           <p className="mt-1 text-sm font-medium text-muted-foreground">
             {items.length > 0

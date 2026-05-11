@@ -7,6 +7,8 @@ import { Button } from "@/components/ui/button"
 import { Container } from "@/components/shared/Container"
 import { ThemeToggle } from "@/components/site/ThemeToggle"
 import { MobileMenu } from "@/components/site/MobileMenu"
+import { CartSheet } from "@/features/cart/components/CartSheet"
+import { useCartStore } from "@/store/cart-store"
 
 const navItems = [
   { href: "/menu", label: "Меню" },
@@ -17,6 +19,8 @@ const navItems = [
 ]
 
 export function Header() {
+  const count = useCartStore((state) => state.getItemsCount())
+  const total = useCartStore((state) => state.getTotal())
   return (
     <header className="sticky top-0 z-50 bg-background/75 backdrop-blur-xl">
       <Container>
@@ -46,14 +50,46 @@ export function Header() {
           <div className="flex items-center gap-2">
             <ThemeToggle />
 
-            <Button
-              variant="outline"
-              size="icon-sm"
-              className="bg-card/80 shadow-sm backdrop-blur"
-              aria-label="Кошик"
-            >
-              <ShoppingBag className="h-5 w-5" />
-            </Button>
+            {/* Desktop */}
+              <CartSheet>
+                <Button
+                  className="relative hidden h-11 rounded-full px-5 lg:inline-flex"
+                  aria-label="Кошик"
+                >
+                  <ShoppingBag className="mr-2 h-4 w-4" />
+                  Кошик
+
+                  {count > 0 && (
+                    <span className="ml-2 rounded-full bg-primary-foreground/15 px-2 py-0.5 text-xs font-extrabold">
+                      {count}
+                    </span>
+                  )}
+
+                  {count > 0 && (
+                    <span className="ml-2 text-sm font-bold opacity-80">
+                      {total}₴
+                    </span>
+                  )}
+                </Button>
+              </CartSheet>
+
+              {/* Mobile */}
+              <CartSheet>
+                <Button
+                  variant="outline"
+                  size="icon-sm"
+                  className="relative bg-card/80 shadow-sm backdrop-blur lg:hidden"
+                  aria-label="Кошик"
+                >
+                  <ShoppingBag className="h-5 w-5" />
+
+                  {count > 0 && (
+                    <span className="absolute -right-1 -top-1 flex h-5 min-w-5 items-center justify-center rounded-full bg-primary px-1.5 text-[11px] font-extrabold text-primary-foreground shadow-sm">
+                      {count}
+                    </span>
+                  )}
+                </Button>
+              </CartSheet>
 
             <MobileMenu />
           </div>

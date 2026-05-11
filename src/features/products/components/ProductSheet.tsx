@@ -14,6 +14,7 @@ import {
   SheetHeader,
   SheetTitle,
   SheetTrigger,
+  SheetDescription
 } from "@/components/ui/sheet"
 
 type ProductSheetProps = {
@@ -66,6 +67,10 @@ export function ProductSheet({ product, children }: ProductSheetProps) {
               {product.title}
             </SheetTitle>
           </SheetHeader>
+
+          <SheetDescription className="sr-only">
+            Детальна інформація про товар та додавання в кошик
+          </SheetDescription>
 
           <p className="mt-3 text-base font-medium leading-7 text-muted-foreground sm:text-lg">
             {product.description}
