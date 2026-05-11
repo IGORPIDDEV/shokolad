@@ -21,6 +21,8 @@ export function ProductCard({ product }: ProductCardProps) {
       <article className="border-border bg-card/80 group cursor-pointer overflow-hidden rounded-[2rem] border p-2.5 shadow-[0_14px_50px_rgba(58,36,28,0.07)] backdrop-blur transition hover:-translate-y-1 hover:shadow-[0_18px_70px_rgba(58,36,28,0.12)] dark:shadow-[0_14px_50px_rgba(0,0,0,0.3)]">
         <Link
           href={`/product/${product.slug}`}
+          prefetch
+          scroll
           onClick={(event) => event.stopPropagation()}
           className="block"
         >
@@ -62,6 +64,8 @@ export function ProductCard({ product }: ProductCardProps) {
             <div>
               <Link
                 href={`/product/${product.slug}`}
+                prefetch
+                scroll
                 onClick={(event) => event.stopPropagation()}
               >
                 <h3 className="text-foreground text-2xl font-extrabold tracking-[-0.045em] transition hover:opacity-70">

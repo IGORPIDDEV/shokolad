@@ -13,7 +13,7 @@ type PageProps = {
 
 export default async function Page({ params }: PageProps) {
   const { slug } = await params
-  const product = getProductBySlug(slug)
+  const product = await getProductBySlug(slug)
 
   if (!product) {
     notFound()

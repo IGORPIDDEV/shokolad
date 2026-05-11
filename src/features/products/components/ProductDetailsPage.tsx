@@ -18,6 +18,10 @@ export function ProductDetailsPage({ product }: ProductDetailsPageProps) {
   const [quantity, setQuantity] = React.useState(1)
   const addItem = useCartStore((state) => state.addItem)
 
+  React.useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "instant" })
+  }, [])
+
   const total = product.price * quantity
 
   return (
@@ -26,6 +30,7 @@ export function ProductDetailsPage({ product }: ProductDetailsPageProps) {
         <Container>
           <Link
             href="/menu"
+            prefetch
             className="text-muted-foreground hover:text-foreground mb-5 inline-flex items-center text-sm font-bold transition"
           >
             <ArrowLeft className="mr-2 h-4 w-4" />

@@ -20,7 +20,39 @@ type MenuPageProps = {
 export function MenuPage({ products, category, query }: MenuPageProps) {
   const router = useRouter()
   const searchParams = useSearchParams()
+
   const [searchValue, setSearchValue] = React.useState(query)
+
+  const [isPending, startTransition] = React.useTransition()
+
+  const [optimisticCategory, setOptimisticCategory] =
+    React.useOptimistic(category)
+
+  function updateCategory(nextCategory: string) {
+    setOptimisticCategory(nextCategory)
+
+    const params = new URLSearchParams(searchParams.toString())
+
+    if (nextCategory !== "all") {
+      params.set("category", nextCategory)
+    } else {
+      params.delete("category")
+    }
+
+    if (searchValue.trim()) {
+      params.set("query", searchValue.trim())
+    } else {
+      params.delete("query")
+    }
+
+    const href = params.toString() ? `/menu?${params.toString()}` : "/menu"
+
+    startTransition(() => {
+      router.push(href, {
+        scroll: false,
+      })
+    })
+  }
 
   function updateQuery(value: string) {
     setSearchValue(value)
@@ -28,16 +60,24 @@ export function MenuPage({ products, category, query }: MenuPageProps) {
     const params = new URLSearchParams(searchParams.toString())
 
     if (value.trim()) {
-      params.set("query", value)
+      params.set("query", value.trim())
     } else {
       params.delete("query")
     }
 
-    if (category && category !== "all") {
-      params.set("category", category)
+    if (optimisticCategory && optimisticCategory !== "all") {
+      params.set("category", optimisticCategory)
+    } else {
+      params.delete("category")
     }
 
-    router.push(`/menu?${params.toString()}`)
+    const href = params.toString() ? `/menu?${params.toString()}` : "/menu"
+
+    startTransition(() => {
+      router.push(href, {
+        scroll: false,
+      })
+    })
   }
 
   return (
@@ -74,16 +114,27 @@ export function MenuPage({ products, category, query }: MenuPageProps) {
           </div>
 
           <div className="mt-6">
-            <CategoryChips activeCategory={category} />
+            <CategoryChips
+              activeCategory={optimisticCategory}
+              onChange={updateCategory}
+            />
           </div>
 
-          <div className="mt-6 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
-            {products.map((product) => (
-              <ProductCard key={product.id} product={product} />
-            ))}
-          </div>
+          {isPending ? (
+            <div className="mt-6 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+              {Array.from({ length: 8 }).map((_, index) => (
+                <ProductCardSkeleton key={index} />
+              ))}
+            </div>
+          ) : (
+            <div className="mt-6 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+              {products.map((product) => (
+                <ProductCard key={product.id} product={product} />
+              ))}
+            </div>
+          )}
 
-          {products.length === 0 && (
+          {!isPending && products.length === 0 && (
             <div className="border-border bg-card mt-6 rounded-[2rem] border p-8 text-center">
               <p className="text-foreground text-2xl font-extrabold tracking-[-0.045em]">
                 Нічого не знайдено
@@ -97,5 +148,37 @@ export function MenuPage({ products, category, query }: MenuPageProps) {
         </Container>
       </section>
     </main>
+  )
+}
+
+function ProductCardSkeleton() {
+  return (
+    <div className="border-border bg-card/80 overflow-hidden rounded-[2rem] border p-2.5 shadow-[0_14px_50px_rgba(58,36,28,0.07)] backdrop-blur">
+      <div className="bg-muted relative aspect-[4/3] overflow-hidden rounded-[1.5rem]">
+        <div className="bg-background/60 absolute top-4 left-4 h-[26px] w-[58px] animate-pulse rounded-full" />
+
+        <div className="bg-background/60 absolute top-4 right-4 h-10 w-10 animate-pulse rounded-full" />
+      </div>
+
+      <div className="p-4">
+        <div className="mb-3 flex items-start justify-between gap-4">
+          <div className="min-w-0 flex-1">
+            <div className="bg-muted h-[32px] w-4/5 animate-pulse rounded-2xl" />
+
+            <div className="bg-muted mt-3 h-4 w-full animate-pulse rounded-full" />
+
+            <div className="bg-muted mt-2 h-4 w-3/4 animate-pulse rounded-full" />
+          </div>
+
+          <div className="bg-muted h-[24px] w-[58px] shrink-0 animate-pulse rounded-full" />
+        </div>
+
+        <div className="mt-5 flex items-center justify-between gap-3">
+          <div className="bg-muted h-[32px] w-[70px] animate-pulse rounded-2xl" />
+
+          <div className="bg-muted h-11 w-[104px] animate-pulse rounded-full" />
+        </div>
+      </div>
+    </div>
   )
 }
