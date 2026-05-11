@@ -1,4 +1,5 @@
 import Image from "next/image"
+import Link from "next/link"
 import { ArrowRight, CakeSlice, Coffee, Heart } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
@@ -42,9 +43,11 @@ export function Hero() {
               </p>
 
               <div className="mt-7 grid gap-3 sm:flex">
-                <Button size="lg" className="w-full sm:w-auto">
-                  Переглянути меню
-                  <ArrowRight className="ml-1 h-5 w-5" />
+                <Button asChild size="lg" className="w-full sm:w-auto">
+                  <Link href="/menu">
+                    Переглянути меню
+                    <ArrowRight className="ml-1 h-5 w-5" />
+                  </Link>
                 </Button>
 
                 <Button
