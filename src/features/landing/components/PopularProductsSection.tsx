@@ -1,13 +1,18 @@
 import Link from "next/link"
 import { ArrowRight } from "lucide-react"
 
-import { products } from "@/data/products"
+import type { Product } from "@/data/products"
 
 import { Container } from "@/components/shared/Container"
-
 import { ProductCard } from "@/features/products/components/ProductCard"
 
-export function PopularProductsSection() {
+type PopularProductsSectionProps = {
+  products: Product[]
+}
+
+export function PopularProductsSection({
+  products,
+}: PopularProductsSectionProps) {
   return (
     <section className="bg-background py-10 sm:py-16 lg:py-20">
       <Container>

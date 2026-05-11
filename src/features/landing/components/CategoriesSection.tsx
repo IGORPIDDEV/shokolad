@@ -2,11 +2,14 @@ import Image from "next/image"
 import Link from "next/link"
 import { ArrowRight } from "lucide-react"
 
-import { categories } from "@/data/categories"
-
+import type { Category } from "@/features/categories/services/get-categories"
 import { Container } from "@/components/shared/Container"
 
-export function CategoriesSection() {
+type CategoriesSectionProps = {
+  categories: Category[]
+}
+
+export function CategoriesSection({ categories }: CategoriesSectionProps) {
   return (
     <section className="bg-background py-10 sm:py-16 lg:py-20">
       <Container>
@@ -34,12 +37,12 @@ export function CategoriesSection() {
           {categories.map((category) => (
             <Link
               key={category.id}
-              href={category.href}
+              href={`/menu?category=${category.slug}`}
               className="group border-border bg-card/80 overflow-hidden rounded-[2rem] border p-2.5 shadow-[0_14px_50px_rgba(58,36,28,0.07)] backdrop-blur transition hover:-translate-y-1 hover:shadow-[0_18px_70px_rgba(58,36,28,0.12)] dark:shadow-[0_14px_50px_rgba(0,0,0,0.3)]"
             >
               <div className="bg-muted relative aspect-[16/10] overflow-hidden rounded-[1.5rem]">
                 <Image
-                  src={category.image}
+                  src={category.image_url || "/images/categories/coffee.png"}
                   alt={category.title}
                   fill
                   sizes="(max-width: 1024px) 100vw, 33vw"
@@ -49,7 +52,7 @@ export function CategoriesSection() {
                 <div className="absolute inset-0 bg-gradient-to-t from-black/45 via-black/5 to-transparent" />
 
                 <div className="bg-background/85 text-foreground absolute top-4 left-4 rounded-full px-3 py-1.5 text-xs font-bold backdrop-blur">
-                  {category.badge}
+                  Fresh daily
                 </div>
               </div>
 
@@ -67,16 +70,6 @@ export function CategoriesSection() {
 
                   <span className="bg-primary text-primary-foreground flex h-11 w-11 shrink-0 items-center justify-center rounded-full shadow-sm transition group-hover:translate-x-1">
                     <ArrowRight className="h-5 w-5" />
-                  </span>
-                </div>
-
-                <div className="mt-4 flex flex-wrap items-center gap-2">
-                  <span className="bg-muted text-muted-foreground rounded-full px-3 py-1 text-xs font-bold">
-                    {category.items}
-                  </span>
-
-                  <span className="bg-muted text-muted-foreground rounded-full px-3 py-1 text-xs font-bold">
-                    {category.price}
                   </span>
                 </div>
 

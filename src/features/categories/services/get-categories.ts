@@ -4,12 +4,14 @@ export type Category = {
   id: string
   slug: string
   title: string
+  description: string | null
+  image_url: string | null
 }
 
 export async function getCategories() {
   const { data, error } = await supabase
     .from("categories")
-    .select("id, slug, title")
+    .select("id, slug, title, description, image_url")
     .eq("is_active", true)
     .order("sort_order", { ascending: true })
 
