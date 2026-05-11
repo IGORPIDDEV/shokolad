@@ -178,7 +178,7 @@ export function CheckoutSheet({ children }: CheckoutSheetProps) {
                     onValueChange={setDeliveryType}
                     className="grid gap-3"
                   >
-                    <Label className="flex cursor-pointer items-center gap-3 rounded-2xl border border-border bg-background p-4">
+                    <Label className="flex cursor-pointer items-center gap-3 rounded-lg border border-border bg-background p-4">
                       <RadioGroupItem value="pickup" />
                       <div>
                         <p className="font-bold text-foreground">Самовивіз</p>
@@ -188,7 +188,7 @@ export function CheckoutSheet({ children }: CheckoutSheetProps) {
                       </div>
                     </Label>
 
-                    <Label className="flex cursor-pointer items-center gap-3 rounded-2xl border border-border bg-background p-4">
+                    <Label className="flex cursor-pointer items-center gap-3 rounded-lg border border-border bg-background p-4">
                       <RadioGroupItem value="delivery" />
                       <div>
                         <p className="font-bold text-foreground">Доставка</p>
@@ -223,7 +223,7 @@ export function CheckoutSheet({ children }: CheckoutSheetProps) {
                       id="comment"
                       name="comment"
                       placeholder="Побажання до замовлення..."
-                      className="min-h-28 resize-none rounded-3xl"
+                      className="min-h-28 resize-none rounded-lg"
                     />
                   </div>
                 </div>
@@ -264,7 +264,7 @@ export function CheckoutSheet({ children }: CheckoutSheetProps) {
                 </div>
 
                 {error && (
-                <p className="mb-3 rounded-2xl bg-destructive/10 px-4 py-3 text-sm font-bold text-destructive">
+                <p className="mb-3 rounded-lg bg-destructive/10 px-4 py-3 text-sm font-bold text-destructive">
                     {error}
                 </p>
                 )}
