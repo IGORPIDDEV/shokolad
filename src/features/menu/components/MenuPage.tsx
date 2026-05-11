@@ -2,6 +2,7 @@
 
 import * as React from "react"
 import { Search } from "lucide-react"
+import { useSearchParams } from "next/navigation"
 
 import { getProducts } from "@/features/products/services/get-products"
 import { Input } from "@/components/ui/input"
@@ -10,17 +11,24 @@ import { ProductCard } from "@/features/products/components/ProductCard"
 import { CategoryChips } from "@/features/menu/components/CategoryChips"
 
 export function MenuPage() {
-  const [activeCategory, setActiveCategory] = React.useState("all")
+  const searchParams = useSearchParams()
+  const categoryFromUrl = searchParams.get("category") || "all"
+
+  const [selectedCategory, setSelectedCategory] =
+    React.useState<string | null>(null)
+
   const [query, setQuery] = React.useState("")
+
+  const activeCategory = selectedCategory ?? categoryFromUrl
 
   const result = getProducts({
     category: activeCategory,
     query,
     limit: 24,
     offset: 0,
-    })
+  })
 
-    const filteredProducts = result.items
+  const filteredProducts = result.items
 
   return (
     <main className="pb-28">
@@ -44,6 +52,7 @@ export function MenuPage() {
 
               <div className="relative">
                 <Search className="absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-muted-foreground" />
+
                 <Input
                   value={query}
                   onChange={(event) => setQuery(event.target.value)}
@@ -57,7 +66,7 @@ export function MenuPage() {
           <div className="mt-6">
             <CategoryChips
               activeCategory={activeCategory}
-              onChange={setActiveCategory}
+              onChange={setSelectedCategory}
             />
           </div>
 
@@ -72,6 +81,7 @@ export function MenuPage() {
               <p className="text-2xl font-extrabold tracking-[-0.045em] text-foreground">
                 Нічого не знайдено
               </p>
+
               <p className="mt-2 text-sm text-muted-foreground">
                 Спробуйте інший запит або категорію.
               </p>

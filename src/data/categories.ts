@@ -34,7 +34,7 @@ export const categories: Category[] = [
     id: "cakes",
     title: "Торти",
     description: "Торти на замовлення та святкові набори",
-    href: "/cakes",
+    href: "/menu?category=cakes",
     image: "/images/categories/cakes.png",
     badge: "Авторські",
     items: "Custom cakes",
