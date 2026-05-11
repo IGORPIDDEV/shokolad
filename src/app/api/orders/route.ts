@@ -30,6 +30,11 @@ export async function POST(request: Request) {
     const token = process.env.TELEGRAM_BOT_TOKEN
     const chatId = process.env.TELEGRAM_CHAT_ID
 
+    console.log("Telegram env check", {
+    hasToken: Boolean(process.env.TELEGRAM_BOT_TOKEN),
+    hasChatId: Boolean(process.env.TELEGRAM_CHAT_ID),
+    })
+
     if (!token || !chatId) {
       return NextResponse.json(
         { message: "Telegram is not configured" },
