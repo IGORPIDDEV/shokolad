@@ -25,7 +25,7 @@ import {
 
 const navItems = [
   { href: "/menu", label: "Меню", description: "Кава, десерти та напої" },
-  { href: "/cakes", label: "Торти", description: "Готові та на замовлення" },
+  // { href: "/cakes", label: "Торти", description: "Готові та на замовлення" },
   { href: "/delivery", label: "Доставка", description: "Умови та самовивіз" },
   { href: "/about", label: "Про нас", description: "Наша історія" },
   { href: "/contacts", label: "Контакти", description: "Адреса та графік" },
