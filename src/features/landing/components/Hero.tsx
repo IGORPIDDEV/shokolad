@@ -52,12 +52,15 @@ export function Hero() {
                 </Button>
 
                 <Button
+                  asChild
                   size="lg"
                   variant="outline"
                   className="bg-background w-full sm:w-auto"
                 >
-                  <CakeSlice className="mr-2 h-5 w-5" />
-                  Торти на замовлення
+                  <Link href="/cakes">
+                    <CakeSlice className="ml-1 h-5 w-5" />
+                    Торти на замовлення
+                  </Link>
                 </Button>
               </div>
 
